@@ -7,6 +7,9 @@ force_clean:
 	docker run --rm -v `pwd`:`pwd` -w `pwd` -it alpine/make make clean
 .PHONY: clean force_clean
 
+lint:
+	pre-commit run -a
+
 build:
 	mkdir -p build && cd build && \
 	cmake .. && make
@@ -34,7 +37,7 @@ python_build:
 python_sdist:
 	$(PYTHON) setup.py sdist
 python_test:
-	$(PYTHON) -c 'import pybind11_rdp; print(pybind11_rdp.add(1, 2))'
+	$(PYTHON) -c 'from pybind11_rdp import rdp; print(rdp([[1, 1], [2, 2], [3, 3], [4, 4]]))'
 
 # conda create -y -n py36 python=3.6
 # conda create -y -n py37 python=3.7
@@ -65,7 +68,7 @@ repair_wheels:
 pypi_remote ?= pypi
 upload_wheels:
 	python -m pip install twine
-	twine upload wheelhouse/*.whl -r $(pypi_remote)
+	twine upload dist/*.whl -r $(pypi_remote)
 
 tar.gz:
 	tar cvzf ../pybind11_rdp.tar.gz .

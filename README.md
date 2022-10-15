@@ -33,7 +33,7 @@ pip install ./pybind11-rdp
 Simple pythonic interface:
 
 ```python
-from rdp import rdp
+from pybind11_rdp import rdp
 
 rdp([[1, 1], [2, 2], [3, 3], [4, 4]])
 [[1, 1], [4, 4]]
@@ -47,7 +47,7 @@ Numpy interface:
 
 ```
 import numpy as np
-from rdp import rdp
+from pybind11_rdp import rdp
 
 rdp(np.array([1, 1, 2, 2, 3, 3, 4, 4]).reshape(4, 2))
 array([[1, 1],

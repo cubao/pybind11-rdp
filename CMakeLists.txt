@@ -1,6 +1,14 @@
 cmake_minimum_required(VERSION 3.4...3.18)
 project(pybind11_rdp)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
+include_directories(BEFORE ${PROJECT_SOURCE_DIR}/headers/include)
+
+set(CMAKE_CXX_STANDARD 14)
+set(PYBIND11_CPP_STANDARD -std=c++14)
+
 add_subdirectory(pybind11)
 pybind11_add_module(pybind11_rdp src/main.cpp)
 

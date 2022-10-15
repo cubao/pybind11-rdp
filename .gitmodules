@@ -3,5 +3,5 @@
     url = https://github.com/pybind/pybind11.git
     branch = master
 [submodule "headers"]
-	path = headers
-	url = https://github.com/cubao/headers.git
+    path = headers
+    url = https://github.com/cubao/headers.git
