@@ -9,6 +9,8 @@ force_clean:
 
 lint:
 	pre-commit run -a
+lint_install:
+	pre-commit install
 
 build:
 	mkdir -p build && cd build && \
