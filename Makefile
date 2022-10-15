@@ -26,14 +26,15 @@ test_in_linux:
 test_in_superlinter:
 	docker run --rm -w `pwd` -v `pwd`:`pwd` -v `pwd`/build/win:`pwd`/build -it $(DOCKER_TAG_SUPERLINTER) bash
 
+PYTHON ?= python
 python_install:
-	python setup.py install
+	$(PYTHON) setup.py install
 python_build:
-	python setup.py bdist_wheel
+	$(PYTHON) setup.py bdist_wheel
 python_sdist:
-	python setup.py sdist
+	$(PYTHON) setup.py sdist
 python_test:
-	python -c 'import cubao_cmake_example; print(cubao_cmake_example.add(1, 2))'
+	$(PYTHON) -c 'import pybind11_rdp; print(pybind11_rdp.add(1, 2))'
 
 # conda create -y -n py36 python=3.6
 # conda create -y -n py37 python=3.7
@@ -67,5 +68,5 @@ upload_wheels:
 	twine upload wheelhouse/*.whl -r $(pypi_remote)
 
 tar.gz:
-	tar cvzf ../cmake_example.tar.gz .
-	ls -alh ../cmake_example.tar.gz
+	tar cvzf ../pybind11_rdp.tar.gz .
+	ls -alh ../pybind11_rdp.tar.gz

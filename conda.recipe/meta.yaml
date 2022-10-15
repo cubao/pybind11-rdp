@@ -1,5 +1,5 @@
 package:
-  name: cubao_cmake_example
+  name: pybind11_rdp
   version: 0.0.1
 
 source:
@@ -27,12 +27,12 @@ test:
   requires:
     - pytest
   imports:
-    - cubao_cmake_example
+    - pybind11_rdp
   source_files:
     - tests
   commands:
     - python -m pytest
 
 about:
-  summary: A CMake example project built with pybind11.
+  summary: C++/pybind11/NumPy implementation of the Ramer-Douglas-Peucker algorithm (Ramer 1972; Douglas and Peucker 1973) for 2D and 3D data.
   license_file: LICENSE

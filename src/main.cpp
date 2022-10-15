@@ -9,12 +9,12 @@ int add(int i, int j) {
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(cubao_cmake_example, m) {
+PYBIND11_MODULE(pybind11_rdp, m) {
     m.doc() = R"pbdoc(
-        Pybind11 example plugin
-        -----------------------
+        c++/pybind11 version of Ramer-Douglas-Peucker (rdp) algorithm
+        -------------------------------------------------------------
 
-        .. currentmodule:: cmake_example
+        .. currentmodule:: pybind11_rdp
 
         .. autosummary::
            :toctree: _generate

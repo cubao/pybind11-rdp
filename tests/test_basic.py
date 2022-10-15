@@ -1,4 +1,4 @@
-import cubao_cmake_example as m
+import pybind11_rdp as m
 
 
 def test_main():
