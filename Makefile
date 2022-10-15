@@ -31,7 +31,12 @@ test_in_linux:
 test_in_superlinter:
 	docker run --rm -w `pwd` -v `pwd`:`pwd` -v `pwd`/build/win:`pwd`/build -it $(DOCKER_TAG_SUPERLINTER) bash
 
-PYTHON ?= python
+PYTHON__ ?= python
+ifeq ($(shell $(PYTHON__) --version | grep 'Python 2'),)
+	PYTHON__ := python3
+endif
+PYTHON ?= $(PYTHON__)
+
 python_install:
 	$(PYTHON) setup.py install
 python_build:
@@ -74,5 +79,11 @@ upload_wheels:
 	twine upload dist/*.whl -r $(pypi_remote)
 
 tar.gz:
-	tar cvzf ../pybind11_rdp.tar.gz .
-	ls -alh ../pybind11_rdp.tar.gz
+	tar -cvz --exclude .git -f ../pybind11-rdp.tar.gz .
+	ls -alh ../pybind11-rdp.tar.gz
+
+# https://stackoverflow.com/a/25817631
+echo-%  : ; @echo -n $($*)
+Echo-%  : ; @echo $($*)
+ECHO-%  : ; @echo $* = $($*)
+echo-Tab: ; @echo -n '    '
