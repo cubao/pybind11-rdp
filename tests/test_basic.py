@@ -2,6 +2,4 @@ import pybind11_rdp as m
 
 
 def test_main():
-    assert m.__version__ == "0.0.1"
-    assert m.add(1, 2) == 3
-    assert m.subtract(1, 2) == -1
+    assert m.rdp([[1, 1], [2, 2], [3, 3], [4, 4]]).shape == (2, 2)

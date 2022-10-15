@@ -27,16 +27,11 @@ test_in_win:
 test_in_mac:
 	docker run --rm -w `pwd` -v `pwd`:`pwd` -v `pwd`/build/mac:`pwd`/build -it $(DOCKER_TAG_MACOS) bash
 test_in_linux:
-	docker run --rm -w `pwd` -v `pwd`:`pwd` -v `pwd`/build/win:`pwd`/build -it $(DOCKER_TAG_LINUX) bash
+	docker run --rm -w `pwd` -v `pwd`:`pwd` -v `pwd`/build/linux:`pwd`/build -it $(DOCKER_TAG_LINUX) bash
 test_in_superlinter:
-	docker run --rm -w `pwd` -v `pwd`:`pwd` -v `pwd`/build/win:`pwd`/build -it $(DOCKER_TAG_SUPERLINTER) bash
+	docker run --rm -w `pwd` -v `pwd`:`pwd` -v `pwd`/build/superlinter:`pwd`/build -it $(DOCKER_TAG_SUPERLINTER) bash
 
-PYTHON__ ?= python
-ifeq ($(shell $(PYTHON__) --version | grep 'Python 2'),)
-	PYTHON__ := python3
-endif
-PYTHON ?= $(PYTHON__)
-
+PYTHON ?= python3
 python_install:
 	$(PYTHON) setup.py install
 python_build:
@@ -54,23 +49,24 @@ python_test:
 # conda create -y -n py310 python=3.10
 # conda env list
 python_build_py36:
-	conda run --no-capture-output -n py36 make python_build
+	PYTHON=python conda run --no-capture-output -n py36 make python_build
 python_build_py37:
-	conda run --no-capture-output -n py37 make python_build
+	PYTHON=python conda run --no-capture-output -n py37 make python_build
 python_build_py38:
-	conda run --no-capture-output -n py38 make python_build
+	PYTHON=python conda run --no-capture-output -n py38 make python_build
 python_build_py39:
-	conda run --no-capture-output -n py39 make python_build
+	PYTHON=python conda run --no-capture-output -n py39 make python_build
 python_build_py310:
-	conda run --no-capture-output -n py310 make python_build
+	PYTHON=python conda run --no-capture-output -n py310 make python_build
 python_build_all: python_build_py36 python_build_py37 python_build_py38 python_build_py39 python_build_py310
 python_build_all_in_linux:
 	docker run --rm -w `pwd` -v `pwd`:`pwd` -v `pwd`/build/win:`pwd`/build -it $(DOCKER_TAG_LINUX) make python_build_all
 	make repair_wheels && rm -rf dist/*.whl && mv wheelhouse/*.whl dist && rm -rf wheelhouse
 python_build_all_in_macos: python_build_py38 python_build_py39 python_build_py310
+python_build_all_in_windows: python_build_all
 
 repair_wheels:
-	python -m pip install auditwheel
+	python -m pip install auditwheel # sudo apt install patchelf
 	ls dist/* | xargs -n1 auditwheel repair --plat manylinux2014_x86_64
 
 pypi_remote ?= pypi
