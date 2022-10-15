@@ -17,16 +17,18 @@ pip install pybind11-rdp
 
 ### from source
 
-```
-pip install git+https://github.com/cubao/pybind11-rdp.git
-```
-
-Or
-
 ```bash
 git clone --recursive https://github.com/cubao/pybind11-rdp
 pip install ./pybind11-rdp
 ```
+
+Or
+
+```
+pip install git+https://github.com/cubao/pybind11-rdp.git
+```
+
+(you can build wheels for later reuse by ` pip wheel git+https://github.com/cubao/pybind11-rdp.git`)
 
 ## Usage
 
