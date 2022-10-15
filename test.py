@@ -59,12 +59,12 @@ for return_mask in (True, False):
             print(f'speed up: {durations[-2] / durations[-1]:.2f}')
             if return_mask:
                 if len(ret1) != len(ret2):
-                    print(f'mismatch! {len(ret1)} != {len(ret2)}')
+                    raise Exception(f'mismatch! {len(ret1)} != {len(ret2)}')
                 else:
                     ret1 = ret1.astype(np.int32)
                     ret2 = ret2.astype(np.int32)
                     delta = np.abs(ret1 - ret2).sum()
                     if delta != 0:
-                        print(f'mismatch! {ret1 - ret2}')
+                        raise Exception(f'mismatch! {ret1 - ret2}')
             delta = np.abs(np.array(ret1) - np.array(ret2)).sum()
             assert delta == 0
