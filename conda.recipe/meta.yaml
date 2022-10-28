@@ -1,6 +1,6 @@
 package:
   name: pybind11_rdp
-  version: 0.0.1
+  version: 0.0.2
 
 source:
   path: ..
@@ -26,6 +26,7 @@ requirements:
 test:
   requires:
     - pytest
+    - numpy
   imports:
     - pybind11_rdp
   source_files:

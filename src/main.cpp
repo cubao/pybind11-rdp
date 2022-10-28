@@ -1,3 +1,9 @@
+// https://github.com/microsoft/vscode-cpptools/issues/9692
+#if __INTELLISENSE__
+#undef __ARM_NEON
+#undef __ARM_NEON__
+#endif
+
 #include <Eigen/Core>
 
 #include <pybind11/eigen.h>
