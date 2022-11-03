@@ -35,6 +35,7 @@ python_build:
 	$(PYTHON) setup.py bdist_wheel
 python_sdist:
 	$(PYTHON) setup.py sdist
+	# tar -tvf dist/pybind11_rdp-*.tar.gz
 python_test:
 	$(PYTHON) -c 'from pybind11_rdp import rdp; print(rdp([[1, 1], [2, 2], [3, 3], [4, 4]]))'
 	$(PYTHON) test.py

@@ -122,7 +122,7 @@ class CMakeBuild(build_ext):
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
     name="pybind11_rdp",
-    version="0.1.0",
+    version="0.1.1",
     author="tzx",
     author_email="dvorak4tzx@gmail.com",
     url="https://github.com/cubao/pybind11-rdp",
