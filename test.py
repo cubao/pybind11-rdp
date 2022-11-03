@@ -1,9 +1,19 @@
 import time
 
 import numpy as np
+from pybind11_rdp import LineSegment
 from pybind11_rdp import rdp as rdp_pybind
 from pybind11_rdp import rdp_mask as rdp_mask
 from rdp import rdp as rdp_python
+
+seg = LineSegment([0, 0, 0], [10, 0, 0])
+assert 4.0 == seg.distance([5.0, 4.0, 0.0])
+assert 5.0 == seg.distance([-4.0, 3.0, 0.0])
+assert 5.0 == seg.distance([14.0, 3.0, 0.0])
+seg = LineSegment([0, 0, 0], [0, 0, 0])
+assert 5.0 == seg.distance([3.0, 4.0, 0.0])
+assert 5.0 == seg.distance([-4.0, 3.0, 0.0])
+assert 13.0 == seg.distance([5.0, 12.0, 0.0])
 
 for fn in [rdp_python, rdp_pybind]:
     print("#" * 80)
