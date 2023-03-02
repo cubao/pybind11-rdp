@@ -1,10 +1,10 @@
+import sys
+
+import numpy as np
 from _pybind11_rdp import LineSegment  # noqa
 from _pybind11_rdp import __version__  # noqa
 from _pybind11_rdp import rdp as _rdp  # noqa
 from _pybind11_rdp import rdp_mask as _rdp_mask  # noqa
-
-import sys
-import numpy as np
 
 
 def __notify_dist_fn(dist):
