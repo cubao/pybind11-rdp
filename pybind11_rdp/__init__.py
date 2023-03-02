@@ -1,12 +1,14 @@
-import numpy as np
 from _pybind11_rdp import LineSegment  # noqa
 from _pybind11_rdp import __version__  # noqa
 from _pybind11_rdp import rdp as _rdp  # noqa
 from _pybind11_rdp import rdp_mask as _rdp_mask  # noqa
 
+import sys
+import numpy as np
+
 
 def __notify_dist_fn(dist):
-    if dist is not None:
+    if dist is None:
         return
     print(
         "we don't support dist function, the only built-in dist function is dist(point,line_segment) (NOT dist(point,line))",

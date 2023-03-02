@@ -1,3 +1,13 @@
+'''
+Based on https://github.com/fhirschmann/rdp/blob/master/tests.py,
+We changed
+
+    from rdp import rdp
+to
+
+    from pybind11_rdp import rdp
+'''
+
 from __future__ import print_function
 
 import time
@@ -7,7 +17,8 @@ from numpy.testing import assert_array_equal as assertAE
 
 import pytest
 
-from rdp import rdp
+# from rdp import rdp
+from pybind11_rdp import rdp
 
 nice_line = np.array([44, 95, 26, 91, 22, 90, 21, 90,
     19, 89, 17, 89, 15, 87, 15, 86, 16, 85,
@@ -105,7 +116,7 @@ def test_nn():
     """
     Non-numpy interface to rdp.
     """
-    assert rdp([[0, 0], [2, 2], [4, 4]]) == [[0, 0], [4, 4]]
+    assert np.all(rdp([[0, 0], [2, 2], [4, 4]]) == [[0, 0], [4, 4]])
 
 def test_rec_iter(line):
     for e in range(0, 10):
