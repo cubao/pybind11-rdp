@@ -3,7 +3,7 @@ import re
 import subprocess
 import sys
 
-from setuptools import Extension, setup
+from setuptools import Extension, find_packages, setup
 from setuptools.command.build_ext import build_ext
 
 # Convert distutils Windows platform specifiers to CMake -A arguments
@@ -122,13 +122,14 @@ class CMakeBuild(build_ext):
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
     name="pybind11_rdp",
-    version="0.1.1",
+    version="0.1.2",
     author="tzx",
     author_email="dvorak4tzx@gmail.com",
     url="https://github.com/cubao/pybind11-rdp",
     description="C++/pybind11/NumPy implementation of the Ramer-Douglas-Peucker algorithm (Ramer 1972; Douglas and Peucker 1973) for 2D and 3D data.",
     long_description=open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
+    packages=find_packages(),
     ext_modules=[CMakeExtension("pybind11_rdp")],
     cmdclass={"build_ext": CMakeBuild},
     zip_safe=False,

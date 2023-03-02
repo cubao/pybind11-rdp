@@ -1,10 +1,11 @@
 import time
 
 import numpy as np
+from rdp import rdp as rdp_python
+
 from pybind11_rdp import LineSegment
 from pybind11_rdp import rdp as rdp_pybind
 from pybind11_rdp import rdp_mask as rdp_mask
-from rdp import rdp as rdp_python
 
 seg = LineSegment([0, 0, 0], [10, 0, 0])
 assert 4.0 == seg.distance([5.0, 4.0, 0.0])
@@ -57,12 +58,16 @@ def python_rdp(xyzs: np.ndarray, *, epsilon: float = 0.0, return_mask: bool = Fa
 
 @my_timer
 def cpp_rdp(
-    xyzs: np.ndarray, *, epsilon: float = 0.0, return_mask: bool = False
+    xyzs: np.ndarray,
+    *,
+    epsilon: float = 0.0,
+    recursive: bool = True,
+    return_mask: bool = False,
 ) -> np.ndarray:
     return (
-        rdp_pybind(xyzs, epsilon=epsilon)
+        rdp_pybind(xyzs, epsilon=epsilon, recursive=recursive)
         if not return_mask
-        else rdp_mask(xyzs, epsilon=epsilon)
+        else rdp_mask(xyzs, epsilon=epsilon, recursive=recursive)
     )
 
 
@@ -87,3 +92,14 @@ for return_mask in (True, False):
                         raise Exception(f"mismatch! {ret1 - ret2}")
             delta = np.abs(np.array(ret1) - np.array(ret2)).sum()
             assert delta == 0
+
+print("benchmarking... recursive/iter version")
+for eps in (10.0, 5.0, 2.0, 1.0, 0.5, 0.1, 0.0):
+    for dim in (3, 2):
+        print("\n" * 4)
+        ret1 = cpp_rdp(enus[:, :dim], epsilon=eps, recursive=True, return_mask=True)
+        ret2 = cpp_rdp(enus[:, :dim], epsilon=eps, recursive=False, return_mask=True)
+        print(
+            f"eps: {eps}, dim: {dim}, ret.sum(): {ret1.sum()}, recursive/iter: {durations[-2] / durations[-1]:.2f}"
+        )
+        assert np.all(ret1 == ret2)

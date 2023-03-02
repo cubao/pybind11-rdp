@@ -37,7 +37,9 @@ python_sdist:
 	$(PYTHON) setup.py sdist
 	# tar -tvf dist/pybind11_rdp-*.tar.gz
 python_test:
+	$(PYTHON) -m pip install pytest rdp
 	$(PYTHON) -c 'from pybind11_rdp import rdp; print(rdp([[1, 1], [2, 2], [3, 3], [4, 4]]))'
+	pytest tests
 	$(PYTHON) test.py
 
 # conda create -y -n py36 python=3.6
