@@ -10,6 +10,8 @@
 #include <pybind11/iostream.h>
 #include <pybind11/pybind11.h>
 
+#include <queue>
+
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
 
@@ -70,13 +72,48 @@ void douglas_simplify(const Eigen::Ref<const RowVectors> &coords,
     douglas_simplify(coords, to_keep, max_index, j, epsilon);
 }
 
+void douglas_simplify_iter(const Eigen::Ref<const RowVectors> &coords,
+                           Eigen::VectorXi &to_keep, const double epsilon)
+{
+    std::queue<std::pair<int, int>> q;
+    q.push({0, to_keep.size() - 1});
+    while (!q.empty()) {
+        int i = q.front().first;
+        int j = q.front().second;
+        q.pop();
+        to_keep[i] = to_keep[j] = 1;
+        if (j - i <= 1) {
+            continue;
+        }
+        LineSegment line(coords.row(i), coords.row(j));
+        double max_dist2 = 0.0;
+        int max_index = i;
+        for (int k = i + 1; k < j; ++k) {
+            double dist2 = line.distance2(coords.row(k));
+            if (dist2 > max_dist2) {
+                max_dist2 = dist2;
+                max_index = k;
+            }
+        }
+        if (max_dist2 <= epsilon * epsilon) {
+            continue;
+        }
+        q.push({i, max_index});
+        q.push({max_index, j});
+    }
+}
+
 Eigen::VectorXi
 douglas_simplify_mask(const Eigen::Ref<const RowVectors> &coords,
-                      double epsilon)
+                      double epsilon, bool recursive)
 {
     Eigen::VectorXi mask(coords.rows());
     mask.setZero();
-    douglas_simplify(coords, mask, 0, mask.size() - 1, epsilon);
+    if (recursive) {
+        douglas_simplify(coords, mask, 0, mask.size() - 1, epsilon);
+    } else {
+        douglas_simplify_iter(coords, mask, epsilon);
+    }
     return mask;
 }
 
@@ -93,9 +130,9 @@ Eigen::VectorXi mask2indexes(const Eigen::Ref<const Eigen::VectorXi> &mask)
 
 Eigen::VectorXi
 douglas_simplify_indexes(const Eigen::Ref<const RowVectors> &coords,
-                         double epsilon)
+                         double epsilon, bool recursive)
 {
-    return mask2indexes(douglas_simplify_mask(coords, epsilon));
+    return mask2indexes(douglas_simplify_mask(coords, epsilon, recursive));
 }
 
 RowVectors select_by_mask(const Eigen::Ref<const RowVectors> &coords,
@@ -112,15 +149,16 @@ RowVectors select_by_mask(const Eigen::Ref<const RowVectors> &coords,
 }
 
 inline RowVectors douglas_simplify(const Eigen::Ref<const RowVectors> &coords,
-                                   double epsilon)
+                                   double epsilon, bool recursive)
 {
-    return select_by_mask(coords, douglas_simplify_mask(coords, epsilon));
+    return select_by_mask(coords,
+                          douglas_simplify_mask(coords, epsilon, recursive));
 }
 
 namespace py = pybind11;
 using namespace pybind11::literals;
 
-PYBIND11_MODULE(pybind11_rdp, m)
+PYBIND11_MODULE(_pybind11_rdp, m)
 {
     m.doc() = R"pbdoc(
         c++/pybind11 version of Ramer-Douglas-Peucker (rdp) algorithm
@@ -154,19 +192,23 @@ PYBIND11_MODULE(pybind11_rdp, m)
 
     m.def(
         "rdp",
-        [](const Eigen::Ref<const RowVectors> &coords, double epsilon)
-            -> RowVectors { return douglas_simplify(coords, epsilon); },
-        rdp_doc, "coords"_a, py::kw_only(), "epsilon"_a = 0.0);
+        [](const Eigen::Ref<const RowVectors> &coords, double epsilon,
+           bool recursive) -> RowVectors {
+            return douglas_simplify(coords, epsilon, recursive);
+        },
+        rdp_doc, "coords"_a, //
+        py::kw_only(), "epsilon"_a = 0.0, "recursive"_a = true);
     m.def(
         "rdp",
-        [](const Eigen::Ref<const RowVectorsNx2> &coords,
-           double epsilon) -> RowVectorsNx2 {
+        [](const Eigen::Ref<const RowVectorsNx2> &coords, double epsilon,
+           bool recursive) -> RowVectorsNx2 {
             RowVectors xyzs(coords.rows(), 3);
             xyzs.setZero();
             xyzs.leftCols(2) = coords;
-            return douglas_simplify(xyzs, epsilon).leftCols(2);
+            return douglas_simplify(xyzs, epsilon, recursive).leftCols(2);
         },
-        rdp_doc, "coords"_a, py::kw_only(), "epsilon"_a = 0.0);
+        rdp_doc, "coords"_a, //
+        py::kw_only(), "epsilon"_a = 0.0, "recursive"_a = true);
 
     auto rdp_mask_doc = R"pbdoc(
         Simplifies a given array of points using the Ramer-Douglas-Peucker algorithm.
@@ -174,21 +216,23 @@ PYBIND11_MODULE(pybind11_rdp, m)
     )pbdoc";
     m.def(
         "rdp_mask",
-        [](const Eigen::Ref<const RowVectors> &coords,
-           double epsilon) -> Eigen::VectorXi {
-            return douglas_simplify_mask(coords, epsilon);
+        [](const Eigen::Ref<const RowVectors> &coords, double epsilon,
+           bool recursive) -> Eigen::VectorXi {
+            return douglas_simplify_mask(coords, epsilon, recursive);
         },
-        rdp_mask_doc, "coords"_a, py::kw_only(), "epsilon"_a = 0.0);
+        rdp_mask_doc, "coords"_a, //
+        py::kw_only(), "epsilon"_a = 0.0, "recursive"_a = true);
     m.def(
         "rdp_mask",
-        [](const Eigen::Ref<const RowVectorsNx2> &coords,
-           double epsilon) -> Eigen::VectorXi {
+        [](const Eigen::Ref<const RowVectorsNx2> &coords, double epsilon,
+           bool recursive) -> Eigen::VectorXi {
             RowVectors xyzs(coords.rows(), 3);
             xyzs.setZero();
             xyzs.leftCols(2) = coords;
-            return douglas_simplify_mask(xyzs, epsilon);
+            return douglas_simplify_mask(xyzs, epsilon, recursive);
         },
-        rdp_mask_doc, "coords"_a, py::kw_only(), "epsilon"_a = 0.0);
+        rdp_mask_doc, "coords"_a, //
+        py::kw_only(), "epsilon"_a = 0.0, "recursive"_a = true);
 
 #ifdef VERSION_INFO
     m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
