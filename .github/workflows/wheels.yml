@@ -47,7 +47,7 @@ jobs:
       env:
         CIBW_ARCHS_MACOS: auto universal2
         # https://cibuildwheel.readthedocs.io/en/stable/options/#build-skip
-        CIBW_SKIP: pp*
+        CIBW_SKIP: pp* *i686
 
     - name: Verify clean directory
       run: git diff --exit-code
