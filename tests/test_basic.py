@@ -1,3 +1,8 @@
+import os
+import sys
+
+import pytest
+
 from pybind11_rdp import LineSegment, rdp
 
 
@@ -16,3 +21,24 @@ def test_rdp():
     assert rdp([[1, 1], [2, 2], [3, 3], [4, 4]], epsilon=1e-9).shape == (2, 2)
     assert rdp([[0, 0], [5, 1 + 1e-3], [10, 0]], epsilon=1).shape == (3, 2)
     assert rdp([[0, 0], [5, 1 - 1e-3], [10, 0]], epsilon=1).shape == (2, 2)
+
+
+def pytest_main(dir: str, *, test_file: str = None):
+    os.chdir(dir)
+    sys.exit(
+        pytest.main(
+            [
+                dir,
+                *(["-k", test_file] if test_file else []),
+                "--capture",
+                "tee-sys",
+                "-vv",
+                "-x",
+            ]
+        )
+    )
+
+
+if __name__ == "__main__":
+    pwd = os.path.abspath(os.path.dirname(__file__))
+    pytest_main(pwd, test_file=os.path.basename(__file__))
