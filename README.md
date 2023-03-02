@@ -64,12 +64,27 @@ array([[1, 1],
 ## Tests
 
 ```
-python3 test.py
+make python_install
+make python_test
 ```
 
-## Links
+## Notice
 
--   https://github.com/fhirschmann/rdp
+As <https://github.com/fhirschmann/rdp/issues/13> points out, `pdist` in `rdp` is **WRONGLY** Point-to-Line distance.
+We use Point-to-LineSegment distance.
+
+```
+from rdp import rdp
+print(rdp([[0, 0], [10, 0.1], [1, 0]], epsilon=1.0)) # wrong
+# [[0.0, 0.0],
+#  [1.0, 0.0]]
+
+from pybind11_rdp import rdp
+print(rdp([[0, 0], [10, 0.1], [1, 0]], epsilon=1.0)) # correct
+# [[ 0.   0. ]
+#  [10.   0.1]
+#  [ 1.   0. ]]
+```
 
 ## References
 
