@@ -5,7 +5,6 @@ from rdp import rdp as rdp_python
 
 from pybind11_rdp import LineSegment
 from pybind11_rdp import rdp as rdp_pybind
-from pybind11_rdp import rdp_mask as rdp_mask
 
 seg = LineSegment([0, 0, 0], [10, 0, 0])
 assert 4.0 == seg.distance([5.0, 4.0, 0.0])
@@ -64,10 +63,11 @@ def cpp_rdp(
     recursive: bool = True,
     return_mask: bool = False,
 ) -> np.ndarray:
-    return (
-        rdp_pybind(xyzs, epsilon=epsilon, recursive=recursive)
-        if not return_mask
-        else rdp_mask(xyzs, epsilon=epsilon, recursive=recursive)
+    return rdp_pybind(
+        xyzs,
+        epsilon=epsilon,
+        algo="rec" if recursive else "iter",
+        return_mask=return_mask,
     )
 
 
