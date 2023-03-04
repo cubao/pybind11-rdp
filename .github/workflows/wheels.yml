@@ -43,11 +43,22 @@ jobs:
       with:
         submodules: true
 
+    - name: Set up QEMU
+      if: runner.os == 'Linux'
+      uses: docker/setup-qemu-action@v2
+      with:
+        platforms: all
+
     - uses: pypa/cibuildwheel@v2.12.0
       env:
-        CIBW_ARCHS_MACOS: auto universal2
+        # CIBW_ARCHS: auto64
+        CIBW_ARCHS_LINUX: x86_64 aarch64
+        CIBW_ARCHS_WINDOWS: AMD64 # ARM64
+        CIBW_ARCHS_MACOS: x86_64 arm64
+        CIBW_BEFORE_BUILD: pip install numpy --prefer-binary
         # https://cibuildwheel.readthedocs.io/en/stable/options/#build-skip
-        CIBW_SKIP: pp* *i686
+        CIBW_SKIP: pp* *i686 *musllinux*
+        CIBW_TEST_SKIP: "*macosx* *win* *aarch64"
 
     - name: Verify clean directory
       run: git diff --exit-code
@@ -77,4 +88,4 @@ jobs:
 
     - uses: pypa/gh-action-pypi-publish@v1.6.4
       with:
-        password: ${{ secrets.pypi_password }}
+        password: ${{ secrets.PYPI_API_TOKEN }}

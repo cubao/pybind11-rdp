@@ -91,3 +91,10 @@ print(rdp([[0, 0], [10, 0.1], [1, 0]], epsilon=1.0)) # correct
 Douglas, David H, and Thomas K Peucker. 1973. “Algorithms for the Reduction of the Number of Points Required to Represent a Digitized Line or Its Caricature.” Cartographica: The International Journal for Geographic Information and Geovisualization 10 (2): 112–122.
 
 Ramer, Urs. 1972. “An Iterative Procedure for the Polygonal Approximation of Plane Curves.” Computer Graphics and Image Processing 1 (3): 244–256.
+
+---
+
+<div class="text-center">
+<a href="https://github.com/cubao/pybind11-rdp" class="btn btn-primary" role="button">Code on GitHub</a>
+<a href="https://pypi.org/project/pybind11-rdp" class="btn btn-primary" role="button">Package on Pypi</a>
+</div>

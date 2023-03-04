@@ -1,0 +1,16 @@
+site_name: pybind11-rdp
+site_url: https://pybind11-rdp.readthedocs.io
+site_description: Ramer-Douglas-Peucker Algorithm (c++ binding for python via pybind11)
+site_author: district10
+
+repo_url: https://github.com/cubao/pybind11-rdp
+edit_uri: blob/master/docs/
+
+theme: readthedocs
+nav:
+    - Home: index.md
+    - About:
+        - Release Notes: about/release-notes.md
+        - License: about/license.md
+
+copyright: Copyright &copy; 2023 <a href="https://cubao.readthedocs.io/en/latest/">cubao team</a>.
