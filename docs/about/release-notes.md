@@ -10,15 +10,19 @@ To upgrade `pybind11-rdp` to the latest version, use pip:
 pip install -U pybind11-rdp
 ```
 
-## Version 0.0.3 (2023-03-04)
+## Version 0.1.2 (2023-03-02)
 
-*   Add macOS arm64 (for m1 chip)
+*   Identical API to rdp, notice difference
 
-## Version 0.0.2 (2023-03-03)
+## Version 0.1.1 (2022-11-03)
 
-*   Release to pypi on GitHub workflow
+*   Fix source packaging
 
-## Version 0.0.1 (2022-10-14)
+## Version 0.1.0 (2022-11-03)
+
+*   Export `LineSegment`
+
+## Version 0.0.1 (2022-10-15)
 
 *   First release to pypi
 
