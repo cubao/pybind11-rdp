@@ -10,6 +10,14 @@ To upgrade `pybind11-rdp` to the latest version, use pip:
 pip install -U pybind11-rdp
 ```
 
+## Version 0.1.4 (2023-07-28)
+
+*   Handle degenerate case
+
+## Version 0.1.3 (2023-07-28)
+
+*   TODO
+
 ## Version 0.1.2 (2023-03-02)
 
 *   Identical API to rdp, notice difference
