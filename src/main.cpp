@@ -58,11 +58,22 @@ void douglas_simplify(const Eigen::Ref<const RowVectors> &coords,
     LineSegment line(coords.row(i), coords.row(j));
     double max_dist2 = 0.0;
     int max_index = i;
+    int mid = i + (j - i) / 2;
+    int min_pos_to_mid = j - i;
     for (int k = i + 1; k < j; ++k) {
         double dist2 = line.distance2(coords.row(k));
         if (dist2 > max_dist2) {
             max_dist2 = dist2;
             max_index = k;
+        } else if (dist2 == max_dist2) {
+            // a workaround to ensure we choose a pivot close to the middle of
+            // the list, reducing recursion depth, for certain degenerate inputs
+            // https://github.com/mapbox/geojson-vt/issues/104
+            int pos_to_mid = std::fabs(k - mid);
+            if (pos_to_mid < min_pos_to_mid) {
+                min_pos_to_mid = pos_to_mid;
+                max_index = k;
+            }
         }
     }
     if (max_dist2 <= epsilon * epsilon) {
@@ -88,11 +99,22 @@ void douglas_simplify_iter(const Eigen::Ref<const RowVectors> &coords,
         LineSegment line(coords.row(i), coords.row(j));
         double max_dist2 = 0.0;
         int max_index = i;
+        int mid = i + (j - i) / 2;
+        int min_pos_to_mid = j - i;
         for (int k = i + 1; k < j; ++k) {
             double dist2 = line.distance2(coords.row(k));
             if (dist2 > max_dist2) {
                 max_dist2 = dist2;
                 max_index = k;
+            } else if (dist2 == max_dist2) {
+                // a workaround to ensure we choose a pivot close to the middle
+                // of the list, reducing recursion depth, for certain degenerate
+                // inputs https://github.com/mapbox/geojson-vt/issues/104
+                int pos_to_mid = std::fabs(k - mid);
+                if (pos_to_mid < min_pos_to_mid) {
+                    min_pos_to_mid = pos_to_mid;
+                    max_index = k;
+                }
             }
         }
         if (max_dist2 <= epsilon * epsilon) {

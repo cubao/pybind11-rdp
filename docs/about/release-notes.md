@@ -10,6 +10,15 @@ To upgrade `pybind11-rdp` to the latest version, use pip:
 pip install -U pybind11-rdp
 ```
 
+## Version 0.1.4 (2023-07-28)
+
+*   Handle degenerate case, related to <https://github.com/mapbox/geojson-vt/issues/104>
+*   How to test? Use `ulimit -s 100 && python3 test.py`?
+
+## Version 0.1.3 (2023-07-28)
+
+*   Update docs, update packaging
+
 ## Version 0.1.2 (2023-03-02)
 
 *   Identical API to rdp, notice difference
