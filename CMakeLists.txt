@@ -25,8 +25,6 @@ add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 add_definitions(-DPROJECT_SOURCE_DIR="${PROJECT_SOURCE_DIR}")
 add_definitions(-DPROJECT_BINARY_DIR="${PROJECT_BINARY_DIR}")
 
-include_directories(BEFORE ${PROJECT_SOURCE_DIR}/headers/include)
-
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -43,7 +41,7 @@ set(CMAKE_CXX_STANDARD 14)
 # scikit-build-core's built-in backport)
 find_package(Python REQUIRED COMPONENTS Interpreter Development.Module)
 find_package(pybind11 CONFIG REQUIRED)
-include_directories(SYSTEM ${PROJECT_SOURCE_DIR}/src/include)
+include_directories(SYSTEM ${PROJECT_SOURCE_DIR}/headers/include)
 
 # Add a library using FindPython's tooling (pybind11 also provides a helper like
 # this)
