@@ -6,7 +6,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "pybind11_rdp"
-version = "0.1.4"
+version = "0.1.5"
 description = "C++/pybind11/NumPy implementation of the Ramer-Douglas-Peucker algorithm (Ramer 1972; Douglas and Peucker 1973) for 2D and 3D data."
 readme = "README.md"
 authors = [

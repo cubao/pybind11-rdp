@@ -9,6 +9,9 @@ to
 """
 
 
+import os
+import sys
+
 import numpy as np
 import pytest
 from numpy.testing import assert_array_equal as assertAE
@@ -305,3 +308,24 @@ def test_rec_iter2():
             rdp(nice_line, algo="iter", epsilon=i * 0.1),
             rdp(nice_line, algo="rec", epsilon=i * 0.1),
         )
+
+
+def pytest_main(dir: str, *, test_file: str = None):
+    os.chdir(dir)
+    sys.exit(
+        pytest.main(
+            [
+                dir,
+                *(["-k", test_file] if test_file else []),
+                "--capture",
+                "tee-sys",
+                "-vv",
+                "-x",
+            ]
+        )
+    )
+
+
+if __name__ == "__main__":
+    pwd = os.path.abspath(os.path.dirname(__file__))
+    pytest_main(pwd, test_file=os.path.basename(__file__))
