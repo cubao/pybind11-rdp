@@ -12,6 +12,7 @@ readme = "README.md"
 authors = [
     {name = "tzx", email = "dvorak4tzx@gmail.com"}
 ]
+requires-python = ">=3.7"
 classifiers = [
   "Development Status :: 4 - Beta",
   "License :: OSI Approved :: MIT License",
