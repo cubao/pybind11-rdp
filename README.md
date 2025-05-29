@@ -24,7 +24,7 @@ pip install ./pybind11-rdp
 
 Or
 
-```
+```bash
 pip install git+https://github.com/cubao/pybind11-rdp.git
 ```
 
@@ -63,9 +63,15 @@ array([[1, 1],
 
 ## Tests
 
-```
+```bash
 make python_install
 make python_test
+```
+
+## Benchmark
+
+```bash
+python3 test.py
 ```
 
 ## Notice
