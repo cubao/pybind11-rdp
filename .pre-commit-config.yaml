@@ -16,10 +16,16 @@ ci:
   autoupdate_commit_msg: "chore: update pre-commit hooks"
   autofix_commit_msg: "style: pre-commit fixes"
 
+exclude: |
+  (?x)^(
+    src/include/.*
+  )$
+
+
 repos:
 # Standard hooks
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.1.0
+  rev: v5.0.0
   hooks:
   - id: check-added-large-files
   - id: check-case-conflict
@@ -56,13 +62,13 @@ repos:
 
 # Changes tabs to spaces
 - repo: https://github.com/Lucas-C/pre-commit-hooks
-  rev: v1.1.13
+  rev: v1.5.5
   hooks:
   - id: remove-tabs
     exclude: ^(docs|Makefile)
 
 - repo: https://github.com/PyCQA/flake8
-  rev: 3.9.2
+  rev: 7.2.0
   hooks:
   - id: flake8
     additional_dependencies: [flake8-bugbear]

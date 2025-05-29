@@ -180,7 +180,7 @@ inline RowVectors douglas_simplify(const Eigen::Ref<const RowVectors> &coords,
 namespace py = pybind11;
 using namespace pybind11::literals;
 
-PYBIND11_MODULE(_pybind11_rdp, m)
+PYBIND11_MODULE(_core, m)
 {
     m.doc() = R"pbdoc(
         c++/pybind11 version of Ramer-Douglas-Peucker (rdp) algorithm
