@@ -15,6 +15,7 @@ C++/pybind11 version of Ramer-Douglas-Peucker (rdp) algorithm
 from __future__ import annotations
 
 from typing import Any, overload
+
 import numpy as np
 from numpy.typing import NDArray
 
@@ -25,6 +26,7 @@ class LineSegment:
     """
     A line segment defined by two points in 3D space.
     """
+
     def __init__(self, A: NDArray[np.float64], B: NDArray[np.float64]) -> None:
         """
         Create a new LineSegment.
@@ -34,7 +36,6 @@ class LineSegment:
             B: Second point of the line segment (3D coordinates)
         """
         ...
-
     def distance(self, P: NDArray[np.float64]) -> float:
         """
         Calculate the distance from a point to this line segment.
@@ -46,7 +47,6 @@ class LineSegment:
             float: Distance from point P to this line segment
         """
         ...
-
     def distance2(self, P: NDArray[np.float64]) -> float:
         """
         Calculate the squared distance from a point to this line segment.
@@ -60,7 +60,9 @@ class LineSegment:
         ...
 
 @overload
-def rdp(coords: NDArray[np.float64], *, epsilon: float = 0.0, recursive: bool = True) -> NDArray[np.float64]:
+def rdp(
+    coords: NDArray[np.float64], *, epsilon: float = 0.0, recursive: bool = True
+) -> NDArray[np.float64]:
     """
     Simplifies a given array of points using the Ramer-Douglas-Peucker algorithm.
 
@@ -80,7 +82,9 @@ def rdp(coords: NDArray[np.float64], *, epsilon: float = 0.0, recursive: bool = 
     ...
 
 @overload
-def rdp(coords: NDArray[np.float64], *, epsilon: float = 0.0, recursive: bool = True) -> NDArray[np.float64]:
+def rdp(
+    coords: NDArray[np.float64], *, epsilon: float = 0.0, recursive: bool = True
+) -> NDArray[np.float64]:
     """
     Simplifies a given array of points using the Ramer-Douglas-Peucker algorithm.
 
@@ -100,7 +104,9 @@ def rdp(coords: NDArray[np.float64], *, epsilon: float = 0.0, recursive: bool = 
     ...
 
 @overload
-def rdp_mask(coords: NDArray[np.float64], *, epsilon: float = 0.0, recursive: bool = True) -> NDArray[np.int32]:
+def rdp_mask(
+    coords: NDArray[np.float64], *, epsilon: float = 0.0, recursive: bool = True
+) -> NDArray[np.int32]:
     """
     Returns a mask indicating which points to keep after simplification.
 
@@ -115,7 +121,9 @@ def rdp_mask(coords: NDArray[np.float64], *, epsilon: float = 0.0, recursive: bo
     ...
 
 @overload
-def rdp_mask(coords: NDArray[np.float64], *, epsilon: float = 0.0, recursive: bool = True) -> NDArray[np.int32]:
+def rdp_mask(
+    coords: NDArray[np.float64], *, epsilon: float = 0.0, recursive: bool = True
+) -> NDArray[np.int32]:
     """
     Returns a mask indicating which points to keep after simplification.
 
@@ -127,4 +135,4 @@ def rdp_mask(coords: NDArray[np.float64], *, epsilon: float = 0.0, recursive: bo
     Returns:
         NDArray[np.int32]: Boolean mask array where True indicates points to keep
     """
-    ... 
+    ...
