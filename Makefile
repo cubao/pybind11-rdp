@@ -60,7 +60,8 @@ python_install:
 python_wheel:
 	$(PYTHON) -m pip wheel . -w build --verbose
 python_sdist:
-	$(PYTHON) -m pip sdist . --verbose
+	$(PYTHON) -m pip install build
+	$(PYTHON) -m build --sdist --verbose
 python_test: pytest
 .PHONY: build
 
