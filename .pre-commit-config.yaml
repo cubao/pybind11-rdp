@@ -68,7 +68,7 @@ repos:
     exclude: ^(docs|Makefile)
 
 - repo: https://github.com/PyCQA/flake8
-  rev: 3.9.2
+  rev: 7.2.0
   hooks:
   - id: flake8
     additional_dependencies: [flake8-bugbear]
