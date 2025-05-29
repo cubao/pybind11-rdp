@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=42", "wheel", "ninja", "cmake"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pybind11_rdp"
+version = "0.1.4"
+description = "C++/pybind11/NumPy implementation of the Ramer-Douglas-Peucker algorithm (Ramer 1972; Douglas and Peucker 1973) for 2D and 3D data."
+readme = "README.md"
+requires-python = ">=3.6"
+license = {file = "LICENSE"}
+authors = [
+    {name = "tzx", email = "dvorak4tzx@gmail.com"}
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: C++",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy",
+]
+[project.urls]
+Homepage = "https://github.com/cubao/pybind11-rdp"
+Repository = "https://github.com/cubao/pybind11-rdp.git"
+
+[project.optional-dependencies]
+test = ["pytest>=6.0"]
+
+[tool.setuptools]
+packages = ["pybind11_rdp"]
+
+[tool.setuptools.dynamic]
+version = {attr = "pybind11_rdp.__version__"}
+
+[tool.setuptools.cmdclass]
+build_ext = "pybind11_rdp.setup:CMakeBuild"
+
+[tool.setuptools.ext_modules]
+pybind11_rdp = {sourcedir = "pybind11_rdp"} 
