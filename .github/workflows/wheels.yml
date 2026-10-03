@@ -44,7 +44,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-13, macos-latest, windows-latest]
+        # macos-15-intel is the current x86_64 macOS runner; macos-13 has
+        # been retired and left this job queued forever.
+        os: [ubuntu-latest, macos-15-intel, macos-latest, windows-latest]
 
     steps:
     - uses: actions/checkout@v4
