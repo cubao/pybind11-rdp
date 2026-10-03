@@ -6,7 +6,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "pybind11_rdp"
-version = "0.1.5"
+version = "0.1.6"
 description = "C++/pybind11/NumPy implementation of the Ramer-Douglas-Peucker algorithm (Ramer 1972; Douglas and Peucker 1973) for 2D and 3D data."
 readme = "README.md"
 authors = [
@@ -34,6 +34,10 @@ Repository = "https://github.com/cubao/pybind11-rdp.git"
 
 [project.optional-dependencies]
 test = ["pytest"]
+# The linux test env runs in the manylinux2014 container (kept for glibc 2.17
+# wheels) whose gcc 10.2 cannot build numpy from source, and numpy >= 2.3 only
+# ships manylinux_2_28 wheels.
+test-linux = ["pytest", "numpy<2.3"]
 
 [tool.scikit-build]
 wheel.expand-macos-universal-tags = true
@@ -56,8 +60,18 @@ build-frontend = "build[uv]"
 test-command = "pytest {project}/tests"
 test-extras = ["test"]
 
+[tool.cibuildwheel.linux]
+# manylinux2014 + gcc 10.2 cannot install/build modern numpy, see test-linux
+test-extras = ["test-linux"]
+
+
+# `--exports whole_archive` keeps the pybind11 module init symbol, otherwise
+# dropped by the linker; -p no:cacheprovider because the wasm side cannot
+# write .pytest_cache.
 [tool.cibuildwheel.pyodide]
 build-frontend = {name = "build", args = ["--exports", "whole_archive"]}
+test-command = "python -m pytest {project}/tests -p no:cacheprovider"
+test-extras = ["test"]
 
 [tool.ruff.lint]
 extend-select = [

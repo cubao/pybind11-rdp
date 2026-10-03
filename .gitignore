@@ -9,3 +9,5 @@ _generate/
 wheelhouse
 !test.py
 pybind-jsoncons
+tests/pyodide/wheels.json
+tests/pyodide/pyodide-dist/
