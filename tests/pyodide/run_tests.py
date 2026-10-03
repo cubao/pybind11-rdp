@@ -21,7 +21,7 @@ def main(test_files):
         exit_code = pytest.main(
             ["-v", "-p", "no:cacheprovider", "--tb=short", *test_files]
         )
-    except BaseException:
+    except Exception:
         traceback.print_exc(file=buf)
         exit_code = 99
     finally:

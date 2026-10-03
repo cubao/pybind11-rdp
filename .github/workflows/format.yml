@@ -18,7 +18,9 @@ jobs:
     - uses: actions/checkout@v4
       with:
         submodules: true
-    - uses: actions/setup-python@v4
+    # pyupgrade 2.31.1 (pinned in .pre-commit-config.yaml) crashes on
+    # Python >= 3.12, where ast.Str was removed; pin like the sibling repos.
+    - uses: actions/setup-python@v5
       with:
-        python-version: "3.x"
+        python-version: "3.9"
     - uses: pre-commit/action@v3.0.0
