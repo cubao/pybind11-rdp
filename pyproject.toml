@@ -6,7 +6,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "pybind11_rdp"
-version = "0.1.5"
+version = "0.1.6"
 description = "C++/pybind11/NumPy implementation of the Ramer-Douglas-Peucker algorithm (Ramer 1972; Douglas and Peucker 1973) for 2D and 3D data."
 readme = "README.md"
 authors = [
@@ -56,8 +56,13 @@ build-frontend = "build[uv]"
 test-command = "pytest {project}/tests"
 test-extras = ["test"]
 
+# `--exports whole_archive` keeps the pybind11 module init symbol, otherwise
+# dropped by the linker; -p no:cacheprovider because the wasm side cannot
+# write .pytest_cache.
 [tool.cibuildwheel.pyodide]
 build-frontend = {name = "build", args = ["--exports", "whole_archive"]}
+test-command = "python -m pytest {project}/tests -p no:cacheprovider"
+test-extras = ["test"]
 
 [tool.ruff.lint]
 extend-select = [

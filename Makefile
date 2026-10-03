@@ -25,6 +25,23 @@ pytest:
 	pytest tests # --capture=tee-sys
 .PHONY: test pytest
 
+PYODIDE_BUILD_DIR ?= dist
+
+pyodide_install:
+	$(PYTHON) -m pip install pyodide-build
+.PHONY: pyodide_install
+
+pyodide_wheel:
+	EMSDK_KEEP_DOWNLOADS=1 pyodide build . --exports whole_archive -o $(PYODIDE_BUILD_DIR)
+.PHONY: pyodide_wheel
+
+# Serves the repository root, then open
+# http://localhost:8123/tests/pyodide/index.html
+pyodide_web: pyodide_wheel
+	$(PYTHON) tests/pyodide/gen_wheels_json.py $(PYODIDE_BUILD_DIR)
+	$(PYTHON) -m http.server 8123
+.PHONY: pyodide_web
+
 docs_build:
 	mkdocs build
 docs_serve:
